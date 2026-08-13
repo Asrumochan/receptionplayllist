@@ -340,8 +340,9 @@
     h1 {
       font-family: "Abril Fatface", serif;
       font-weight: 400;
-      font-size: clamp(3.2rem, 8vw, 7rem);
-      line-height: 0.93;
+      font-size: clamp(2.4rem, 6vw, 5.8rem);
+      line-height: 1;
+      white-space: nowrap;
       background: linear-gradient(
         90deg,
         #fff4e0 20%, #ffe090 35%, #fff8c8 48%, #ffd060 58%, #fff4e0 72%
