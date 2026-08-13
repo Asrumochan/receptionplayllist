@@ -9,14 +9,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --ink: #2d1b1b;
-      --gold: #f7d385;
-      --rose: #f3b8a6;
-      --wine: #7b314f;
-      --pearl: #fff7ef;
-      --glass: rgba(255, 255, 255, 0.14);
-      --glass-border: rgba(255, 255, 255, 0.28);
-      --shadow: 0 18px 45px rgba(39, 11, 23, 0.35);
+      --ink: #1a0d10;
+      --gold: #f0c96a;
+      --rose: #e8a0b0;
+      --wine: #6b1f38;
+      --pearl: #fff8f0;
+      --glass: rgba(255, 240, 210, 0.10);
+      --glass-border: rgba(255, 218, 160, 0.32);
+      --shadow: 0 20px 60px rgba(20, 6, 12, 0.55);
+      --chandelier: #f5d78e;
+      --beam1: rgba(255, 200, 100, 0.13);
+      --beam2: rgba(255, 160, 180, 0.11);
+      --beam3: rgba(180, 140, 255, 0.09);
     }
 
     * {
@@ -30,7 +34,7 @@
       width: 100%;
       min-height: 100%;
       overflow-x: hidden;
-      background: #120b10;
+      background: #0e0710;
       color: var(--pearl);
       font-family: "Manrope", sans-serif;
     }
@@ -44,16 +48,21 @@
       inset: 0;
       z-index: -5;
       overflow: hidden;
+      /* Rich deep velvet ballroom base */
       background:
-        radial-gradient(1200px 700px at 15% -15%, rgba(255, 228, 176, 0.35), transparent 60%),
-        radial-gradient(900px 600px at 90% 5%, rgba(209, 101, 144, 0.3), transparent 58%),
-        radial-gradient(900px 550px at 40% 90%, rgba(255, 166, 120, 0.24), transparent 64%),
-        linear-gradient(160deg, #110a11 0%, #2f1523 52%, #4a1f35 100%);
+        radial-gradient(ellipse 1400px 600px at 50% -8%, rgba(240, 195, 100, 0.22), transparent 62%),
+        radial-gradient(ellipse 700px 500px at 10% 30%, rgba(180, 60, 100, 0.18), transparent 58%),
+        radial-gradient(ellipse 700px 500px at 90% 28%, rgba(140, 80, 200, 0.14), transparent 58%),
+        radial-gradient(ellipse 1000px 400px at 50% 80%, rgba(255, 140, 80, 0.12), transparent 66%),
+        linear-gradient(175deg, #0c0610 0%, #1e0c1a 38%, #2c1228 65%, #1a0a15 100%);
     }
 
     .grain,
     .dancefloor,
     .confetti,
+    .spotlights,
+    .stringlights,
+    .glitter,
     .lights,
     .vignette {
       position: absolute;
@@ -68,34 +77,119 @@
       animation: grainShift 1.1s steps(4) infinite;
     }
 
+    /* Perspective dance floor grid */
     .dancefloor {
-      bottom: -12%;
+      bottom: -5%;
       top: auto;
-      left: -8%;
-      right: -8%;
-      height: 46%;
-      transform: perspective(700px) rotateX(62deg);
+      left: -10%;
+      right: -10%;
+      height: 42%;
+      transform: perspective(600px) rotateX(68deg);
       transform-origin: center bottom;
       background:
-        linear-gradient(90deg, rgba(255, 194, 120, 0.17) 1px, transparent 1px) 0 0 / 52px 52px,
-        linear-gradient(0deg, rgba(255, 194, 120, 0.17) 1px, transparent 1px) 0 0 / 52px 52px,
-        radial-gradient(circle at 50% 20%, rgba(255, 209, 145, 0.28), rgba(255, 209, 145, 0.03) 58%, transparent 70%);
+        linear-gradient(90deg, rgba(240, 190, 100, 0.2) 1px, transparent 1px) 0 0 / 60px 60px,
+        linear-gradient(0deg, rgba(240, 190, 100, 0.2) 1px, transparent 1px) 0 0 / 60px 60px,
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 200, 130, 0.32), transparent 70%),
+        linear-gradient(to bottom, rgba(220, 160, 80, 0.08), transparent);
+      filter: blur(0.4px);
+      opacity: 0.7;
+      animation: floorPulse 4.8s ease-in-out infinite;
+    }
+
+    /* DJ spotlight beams from ceiling */
+    .spotlights {
+      top: 0;
+      bottom: auto;
+      height: 100%;
+    }
+    .spotlights::before,
+    .spotlights::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+    }
+    .spotlights::before {
+      left: 20%;
+      border-width: 0 80px 700px 80px;
+      border-color: transparent transparent rgba(255, 195, 100, 0.055) transparent;
+      filter: blur(8px);
+      transform-origin: top center;
+      animation: beamSwing 7s ease-in-out infinite;
+    }
+    .spotlights::after {
+      right: 18%;
+      border-width: 0 70px 650px 70px;
+      border-color: transparent transparent rgba(200, 130, 255, 0.05) transparent;
+      filter: blur(10px);
+      transform-origin: top center;
+      animation: beamSwing 9s ease-in-out infinite reverse;
+    }
+
+    /* Horizontal fairy string lights */
+    .stringlights {
+      height: 100%;
+      overflow: hidden;
+    }
+    .stringlights::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, rgba(255, 245, 195, 1) 0 2.5px, transparent 3px),
+        radial-gradient(circle, rgba(255, 200, 160, 1) 0 2px, transparent 3px),
+        radial-gradient(circle, rgba(255, 230, 180, 1) 0 2px, transparent 3px),
+        radial-gradient(circle, rgba(255, 180, 200, 1) 0 2px, transparent 3px),
+        radial-gradient(circle, rgba(200, 220, 255, 1) 0 2px, transparent 3px);
+      background-size: 90px 28px, 75px 22px, 82px 18px, 68px 24px, 88px 20px;
+      background-position: 0 4%, 10px 10%, 5px 6%, 20px 14%, 0 8%;
       filter: blur(0.3px);
-      opacity: 0.65;
-      animation: floorPulse 5.6s ease-in-out infinite;
+      opacity: 0.9;
+      animation: stringFlicker 3.2s ease-in-out infinite alternate;
+    }
+    .stringlights::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, rgba(255, 235, 170, 0.9) 0 2px, transparent 3px),
+        radial-gradient(circle, rgba(255, 190, 140, 0.9) 0 2px, transparent 3px),
+        radial-gradient(circle, rgba(180, 200, 255, 0.8) 0 2px, transparent 3px);
+      background-size: 110px 26px, 95px 20px, 85px 24px;
+      background-position: 30px 88%, 0 82%, 15px 92%;
+      filter: blur(0.3px);
+      opacity: 0.8;
+      animation: stringFlicker 4.1s ease-in-out infinite alternate-reverse;
+    }
+
+    /* Glitter shimmer overlay */
+    .glitter {
+      background-image:
+        radial-gradient(circle, rgba(255, 248, 210, 0.9) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255, 220, 160, 0.8) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255, 210, 230, 0.75) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(200, 200, 255, 0.7) 0 1px, transparent 1.5px);
+      background-size: 120px 140px, 95px 110px, 145px 130px, 100px 120px;
+      background-position: 10% 20%, 40% 55%, 70% 30%, 88% 68%;
+      opacity: 0.35;
+      animation: glitterSpin 20s linear infinite;
     }
 
     .confetti {
       background-image:
-        radial-gradient(circle at 12% 22%, rgba(255, 210, 149, 0.72) 0 2px, transparent 3px),
-        radial-gradient(circle at 21% 38%, rgba(255, 172, 190, 0.74) 0 2px, transparent 3px),
-        radial-gradient(circle at 35% 16%, rgba(255, 244, 184, 0.7) 0 2px, transparent 3px),
-        radial-gradient(circle at 47% 33%, rgba(255, 191, 146, 0.68) 0 2px, transparent 3px),
-        radial-gradient(circle at 63% 24%, rgba(255, 221, 168, 0.76) 0 2px, transparent 3px),
-        radial-gradient(circle at 79% 37%, rgba(255, 172, 189, 0.72) 0 2px, transparent 3px),
-        radial-gradient(circle at 91% 19%, rgba(255, 234, 172, 0.72) 0 2px, transparent 3px);
-      opacity: 0.42;
-      animation: confettiDrift 15s linear infinite;
+        radial-gradient(circle at 8% 18%, rgba(255, 215, 140, 0.82) 0 3px, transparent 4px),
+        radial-gradient(circle at 18% 42%, rgba(255, 160, 185, 0.8) 0 2.5px, transparent 3.5px),
+        radial-gradient(circle at 31% 12%, rgba(255, 245, 175, 0.78) 0 2.5px, transparent 3.5px),
+        radial-gradient(circle at 43% 36%, rgba(220, 180, 255, 0.7) 0 2px, transparent 3px),
+        radial-gradient(circle at 57% 22%, rgba(255, 215, 155, 0.82) 0 3px, transparent 4px),
+        radial-gradient(circle at 69% 48%, rgba(255, 165, 185, 0.76) 0 2.5px, transparent 3.5px),
+        radial-gradient(circle at 78% 16%, rgba(255, 235, 155, 0.8) 0 2.5px, transparent 3.5px),
+        radial-gradient(circle at 89% 38%, rgba(200, 210, 255, 0.72) 0 2px, transparent 3px),
+        radial-gradient(circle at 95% 24%, rgba(255, 200, 140, 0.78) 0 2.5px, transparent 3.5px);
+      opacity: 0.55;
+      animation: confettiDrift 18s ease-in-out infinite;
     }
 
     .lights::before,
@@ -107,47 +201,50 @@
       filter: blur(2px);
     }
 
+    /* Coloured bulb string lights - top rows */
     .lights::before {
       background-image:
-        radial-gradient(circle, rgba(255, 240, 177, 0.95) 0 4px, transparent 5px),
-        radial-gradient(circle, rgba(255, 196, 136, 0.95) 0 3px, transparent 4px),
-        radial-gradient(circle, rgba(255, 173, 173, 0.9) 0 3px, transparent 4px);
-      background-size: 140px 70px, 130px 60px, 115px 72px;
-      background-position: 0 8%, 0 15%, 0 22%;
-      animation: festoon 11s linear infinite;
-      opacity: 0.56;
+        radial-gradient(circle, rgba(255, 245, 190, 1) 0 4px, rgba(255, 220, 100, 0.4) 5px, transparent 8px),
+        radial-gradient(circle, rgba(255, 180, 130, 1) 0 3.5px, rgba(255, 140, 80, 0.3) 4.5px, transparent 7px),
+        radial-gradient(circle, rgba(200, 160, 255, 1) 0 3.5px, rgba(160, 100, 255, 0.3) 4.5px, transparent 7px);
+      background-size: 110px 55px, 100px 48px, 95px 52px;
+      background-position: 0 5%, 0 11%, 0 17%;
+      animation: festoon 10s linear infinite;
+      opacity: 0.7;
     }
 
+    /* Coloured bulb string lights - bottom rows */
     .lights::after {
       background-image:
-        radial-gradient(circle, rgba(255, 227, 179, 0.9) 0 4px, transparent 5px),
-        radial-gradient(circle, rgba(255, 181, 130, 0.88) 0 3px, transparent 4px),
-        radial-gradient(circle, rgba(255, 188, 159, 0.82) 0 3px, transparent 4px);
-      background-size: 160px 80px, 140px 70px, 120px 66px;
-      background-position: -40px 87%, -10px 81%, -20px 76%;
-      animation: festoonRev 13s linear infinite;
-      opacity: 0.45;
+        radial-gradient(circle, rgba(255, 230, 160, 1) 0 4px, rgba(255, 200, 100, 0.35) 5px, transparent 8px),
+        radial-gradient(circle, rgba(255, 170, 190, 1) 0 3.5px, rgba(255, 120, 150, 0.3) 4.5px, transparent 7px),
+        radial-gradient(circle, rgba(140, 200, 255, 1) 0 3.5px, rgba(80, 160, 255, 0.3) 4.5px, transparent 7px);
+      background-size: 130px 65px, 115px 58px, 100px 62px;
+      background-position: -30px 86%, -10px 80%, -20px 74%;
+      animation: festoonRev 12s linear infinite;
+      opacity: 0.65;
     }
 
     .vignette {
       background:
-        radial-gradient(circle at center, transparent 44%, rgba(13, 7, 10, 0.62) 100%),
-        linear-gradient(to bottom, rgba(10, 6, 10, 0.34), transparent 26%, transparent 72%, rgba(10, 6, 10, 0.55));
+        radial-gradient(ellipse at 50% 40%, transparent 38%, rgba(8, 3, 10, 0.72) 100%),
+        linear-gradient(to bottom, rgba(8, 4, 10, 0.52), transparent 22%, transparent 68%, rgba(8, 4, 10, 0.7));
     }
 
+    /* Chandelier glow blooms from ceiling */
     .bg::before {
       content: "";
       position: absolute;
       left: 0;
       right: 0;
       top: 0;
-      height: 26%;
+      height: 30%;
       pointer-events: none;
       background:
-        radial-gradient(220px 90px at 15% 0%, rgba(245, 190, 153, 0.22), transparent 70%),
-        radial-gradient(240px 100px at 50% 0%, rgba(255, 220, 171, 0.24), transparent 70%),
-        radial-gradient(220px 90px at 85% 0%, rgba(244, 176, 189, 0.21), transparent 70%);
-      opacity: 0.8;
+        radial-gradient(260px 130px at 50% 0%, rgba(255, 225, 150, 0.34), transparent 70%),
+        radial-gradient(180px 90px at 18% 0%, rgba(255, 195, 130, 0.2), transparent 70%),
+        radial-gradient(180px 90px at 82% 0%, rgba(200, 160, 255, 0.18), transparent 70%);
+      opacity: 1;
     }
 
     main {
@@ -191,7 +288,9 @@
       font-size: clamp(2.9rem, 7vw, 6.2rem);
       line-height: 0.95;
       color: #fff2dc;
-      text-shadow: 0 8px 28px rgba(31, 7, 16, 0.34);
+      text-shadow:
+        0 0 40px rgba(255, 210, 120, 0.45),
+        0 8px 28px rgba(20, 6, 14, 0.5);
       margin-bottom: 1rem;
       letter-spacing: 0.01em;
     }
@@ -258,25 +357,34 @@
 
     .halo {
       position: absolute;
-      width: clamp(270px, 44vw, 470px);
-      height: clamp(270px, 44vw, 470px);
+      width: clamp(270px, 44vw, 500px);
+      height: clamp(270px, 44vw, 500px);
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 211, 146, 0.36) 0%, rgba(255, 165, 132, 0.06) 52%, transparent 74%);
-      filter: blur(0.5px);
-      animation: breathe 6.2s ease-in-out infinite;
+      background: radial-gradient(
+        circle,
+        rgba(255, 220, 140, 0.38) 0%,
+        rgba(200, 140, 200, 0.12) 40%,
+        rgba(255, 165, 132, 0.05) 60%,
+        transparent 76%
+      );
+      filter: blur(1px);
+      animation: breathe 5.5s ease-in-out infinite;
       z-index: 0;
     }
 
+    /* Banquet table / venue card look */
     .cassette {
       position: relative;
       width: min(360px, 86vw);
       aspect-ratio: 1.44;
       border-radius: 22px;
       background:
-        linear-gradient(145deg, rgba(53, 25, 35, 0.88), rgba(122, 54, 78, 0.88)),
-        linear-gradient(0deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0));
-      border: 1px solid rgba(255, 225, 181, 0.25);
-      box-shadow: var(--shadow);
+        linear-gradient(145deg, rgba(30, 10, 22, 0.92), rgba(72, 22, 45, 0.92));
+      border: 1px solid rgba(240, 200, 130, 0.35);
+      box-shadow:
+        var(--shadow),
+        0 0 0 3px rgba(240, 200, 130, 0.1),
+        inset 0 1px 0 rgba(255, 230, 170, 0.12);
       padding: 1.05rem;
       display: flex;
       flex-direction: column;
@@ -288,20 +396,21 @@
     }
 
     .cassette:hover {
-      transform: translateY(-5px) rotateX(2deg) rotateY(-2deg);
-      box-shadow: 0 22px 50px rgba(26, 8, 15, 0.45);
+      transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
+      box-shadow: 0 28px 60px rgba(14, 4, 10, 0.6), 0 0 0 3px rgba(240, 200, 130, 0.18);
     }
 
     .sticker {
       border-radius: 11px;
       padding: 0.8rem 0.85rem;
-      border: 1px solid rgba(255, 220, 178, 0.29);
-      background: linear-gradient(130deg, rgba(255, 248, 233, 0.83), rgba(250, 214, 174, 0.74));
-      color: #4a2132;
+      border: 1px solid rgba(240, 205, 140, 0.38);
+      background: linear-gradient(130deg, rgba(255, 248, 230, 0.88), rgba(245, 210, 162, 0.8));
+      color: #3e1828;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 0.9rem;
+      box-shadow: 0 4px 16px rgba(20, 6, 12, 0.28);
     }
 
     .sticker strong {
@@ -435,9 +544,12 @@
       width: min(940px, 94vw);
       border-radius: 20px;
       border: 1px solid var(--glass-border);
-      background: var(--glass);
-      backdrop-filter: blur(14px);
-      box-shadow: 0 12px 42px rgba(19, 7, 14, 0.45);
+      background: rgba(20, 8, 16, 0.65);
+      backdrop-filter: blur(18px);
+      box-shadow:
+        0 12px 42px rgba(10, 3, 8, 0.6),
+        0 0 0 1px rgba(240, 200, 130, 0.12),
+        inset 0 1px 0 rgba(255, 230, 170, 0.08);
       padding: 0.85rem 1rem;
       z-index: 20;
     }
@@ -616,14 +728,35 @@
     }
 
     @keyframes floorPulse {
-      0%, 100% { opacity: 0.56; }
-      50% { opacity: 0.78; }
+      0%, 100% { opacity: 0.62; }
+      50% { opacity: 0.85; }
     }
 
     @keyframes confettiDrift {
-      0% { transform: translateY(-3%) translateX(0); }
-      50% { transform: translateY(3%) translateX(-0.7%); }
-      100% { transform: translateY(-3%) translateX(0); }
+      0% { transform: translateY(0) translateX(0); opacity: 0.55; }
+      33% { transform: translateY(4%) translateX(-1%); opacity: 0.4; }
+      66% { transform: translateY(-2%) translateX(0.8%); opacity: 0.6; }
+      100% { transform: translateY(0) translateX(0); opacity: 0.55; }
+    }
+
+    @keyframes beamSwing {
+      0%, 100% { transform: rotate(-12deg); }
+      50% { transform: rotate(12deg); }
+    }
+
+    @keyframes stringFlicker {
+      0% { opacity: 0.8; }
+      25% { opacity: 0.95; }
+      60% { opacity: 0.72; }
+      100% { opacity: 0.9; }
+    }
+
+    @keyframes glitterSpin {
+      0% { transform: translateX(0) translateY(0); opacity: 0.3; }
+      25% { opacity: 0.45; }
+      50% { transform: translateX(-8px) translateY(5px); opacity: 0.28; }
+      75% { opacity: 0.42; }
+      100% { transform: translateX(0) translateY(0); opacity: 0.3; }
     }
 
     @media (max-width: 930px) {
@@ -678,30 +811,65 @@
   <div class="bg" aria-hidden="true">
     <div class="grain"></div>
     <div class="dancefloor"></div>
+    <div class="spotlights"></div>
+    <div class="stringlights"></div>
+    <div class="glitter"></div>
     <div class="confetti"></div>
     <div class="lights"></div>
     <div class="vignette"></div>
   </div>
+
+  <!-- Chandelier SVG fixed at top center -->
+  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 180"
+    style="position:fixed;top:-6px;left:50%;transform:translateX(-50%);width:min(320px,55vw);z-index:2;pointer-events:none;opacity:0.82;filter:drop-shadow(0 4px 24px rgba(255,210,100,0.45))">
+    <!-- Main rod -->
+    <rect x="127" y="0" width="6" height="32" rx="3" fill="#c9943a"/>
+    <!-- Crown ring -->
+    <ellipse cx="130" cy="34" rx="38" ry="7" fill="none" stroke="#d9a84a" stroke-width="2.5"/>
+    <!-- Drip arms -->
+    <line x1="92" y1="34" x2="68" y2="72" stroke="#c9943a" stroke-width="2"/>
+    <line x1="108" y1="38" x2="95" y2="80" stroke="#c9943a" stroke-width="2"/>
+    <line x1="130" y1="41" x2="130" y2="82" stroke="#c9943a" stroke-width="2"/>
+    <line x1="152" y1="38" x2="165" y2="80" stroke="#c9943a" stroke-width="2"/>
+    <line x1="168" y1="34" x2="192" y2="72" stroke="#c9943a" stroke-width="2"/>
+    <!-- Crystal drops -->
+    <ellipse cx="68" cy="76" rx="5" ry="8" fill="rgba(255,240,190,0.82)" stroke="#e8c97a" stroke-width="1"/>
+    <ellipse cx="95" cy="84" rx="4" ry="7" fill="rgba(255,235,180,0.78)" stroke="#e8c97a" stroke-width="1"/>
+    <ellipse cx="130" cy="86" rx="6" ry="10" fill="rgba(255,245,200,0.88)" stroke="#f0d48a" stroke-width="1.2"/>
+    <ellipse cx="165" cy="84" rx="4" ry="7" fill="rgba(255,235,180,0.78)" stroke="#e8c97a" stroke-width="1"/>
+    <ellipse cx="192" cy="76" rx="5" ry="8" fill="rgba(255,240,190,0.82)" stroke="#e8c97a" stroke-width="1"/>
+    <!-- Centre glow bulb -->
+    <circle cx="130" cy="54" r="14" fill="rgba(255,240,180,0.12)" stroke="#e8c97a" stroke-width="1.5"/>
+    <circle cx="130" cy="54" r="7" fill="rgba(255,245,200,0.92)"/>
+    <circle cx="130" cy="54" r="18" fill="rgba(255,230,140,0.05)"/>
+    <!-- Candle tips -->
+    <ellipse cx="68" cy="30" rx="3" ry="5" fill="rgba(255,245,195,0.7)"/>
+    <ellipse cx="192" cy="30" rx="3" ry="5" fill="rgba(255,245,195,0.7)"/>
+    <ellipse cx="100" cy="26" rx="2.5" ry="4" fill="rgba(255,245,195,0.65)"/>
+    <ellipse cx="160" cy="26" rx="2.5" ry="4" fill="rgba(255,245,195,0.65)"/>
+  </svg>
 
   <main>
     <section class="hero">
       <div>
         <div class="eyebrow">
           <span class="pulse-dot"></span>
-          reception memory channel
+          grand ballroom &nbsp;·&nbsp; table 7 &nbsp;·&nbsp; live now
         </div>
         <h1>Reception<br />Playlist Nights</h1>
         <p class="subtitle">
-          Fairy lights above, cousins on the dance floor, camera flashes every few seconds,
-          and that one track everyone knows by heart. This is the soundtrack of post-vows joy.
+          Chandeliers above, round tables draped in ivory, waiters gliding by with starters,
+          and the DJ turning requests into memories. Welcome to the night everyone remembers.
         </p>
 
         <div class="memory-tags" aria-label="Reception memories">
-          <span>video camera red light on</span>
-          <span>photo khichwa lo</span>
-          <span>dj wale request pending</span>
-          <span>mithai counter open</span>
-          <span>one last dance promise</span>
+          <span>🕯️ Table 7 — Bride's Side</span>
+          <span>🍽️ Starters Being Served</span>
+          <span>🎶 DJ Request Open</span>
+          <span>🥂 Champagne Tower Up</span>
+          <span>📸 Photographer on Floor</span>
+          <span>🌹 Floral Centrepiece Fresh</span>
+          <span>🎂 Cake Cut at 9:30</span>
         </div>
 
         <div class="quote-box" id="quoteBox" aria-live="polite"></div>
@@ -713,9 +881,9 @@
           <header class="sticker">
             <div>
               <strong>Reception Mix Vol. 2009</strong>
-              <p>family request tape</p>
+              <p>✨ grand ballroom &nbsp;·&nbsp; evening session</p>
             </div>
-            <div class="label-mini">Side A</div>
+            <div class="label-mini">Live ●</div>
           </header>
 
           <section class="window" aria-hidden="true">
@@ -725,8 +893,8 @@
           </section>
 
           <footer class="status-strip">
-            <span>Queue: <b>Rishta FM</b></span>
-            <span>Status: <b>Dance Floor Hot</b></span>
+            <span>Waiter: <b>Round 2 Serving</b></span>
+            <span>Floor: <b>🔥 Packed</b></span>
           </footer>
         </article>
         <div class="spark-layer" id="sparkLayer"></div>
@@ -761,12 +929,16 @@
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
     const nostalgicLines = [
-      '"Everyone to stage please" was never just an announcement, it was a moment.',
-      'The DJ said last song. Nobody believed it. Nobody ever does.',
-      'Cousin choreography level: six rehearsals, full confidence, zero sync.',
-      'One camera for photos, one for video, and twenty phones for memories.',
-      'When this beat drops, even the shy uncle starts tapping his shoes.',
-      'The bouquet smelled like roses, perfume, and a little bit of dance-floor sweat.'
+      '"Can I get another plate of that paneer?" — every uncle at every reception.',
+      'The DJ said last song. Nobody believed him. He played four more.',
+      'Waiter uncle appeared from nowhere with the exact thing you were craving.',
+      'One camera for photos, one for video, forty phones pointed at the cake.',
+      'The chandelier made everyone look like royalty, even the ones who came late.',
+      'Table 7 was always the loudest. Table 7 was always having the most fun.',
+      'That one song hit and the whole floor filled up in exactly three seconds.',
+      'The starters were good. The main was great. The dessert was a spiritual experience.',
+      '"Everyone to stage please" — nobody moved until the third announcement.',
+      'The champagne tower survived. The dance floor did not know what hit it.'
     ];
 
     const youtubeSourceUrl = 'https://youtu.be/_i0oA5YYf1Y?si=ljuCO0_LQWfQOVk8';
