@@ -184,7 +184,7 @@
       const bokeh = Array.from({ length: 28 }, () => ({
         x: Math.random(), y: Math.random(),
         r: 28 + Math.random() * 90,
-        a: 0.025 + Math.random() * 0.065,
+        a: 0.08 + Math.random() * 0.14,
         dx: (Math.random() - 0.5) * 0.00015,
         dy: -0.00008 - Math.random() * 0.00012,
         color: BOKEH_COLORS[Math.floor(Math.random() * BOKEH_COLORS.length)]
@@ -222,7 +222,7 @@
         angle: (Math.PI * 2 * i) / 12 + Math.random() * 0.4,
         radius: 0.20 + Math.random() * 0.20,
         size: 38 + Math.random() * 65,
-        alpha: 0.065 + Math.random() * 0.09,
+        alpha: 0.14 + Math.random() * 0.16,
         speed: (0.15 + Math.random() * 0.28) * (Math.random() > 0.5 ? 1 : -1),
         color: DISCO[i % DISCO.length],
         yBias: 0.32 + Math.random() * 0.32
@@ -313,7 +313,7 @@
 
         /* Sparkles */
         sparkles.forEach(s => {
-          const alpha = ((Math.sin(t * s.speed + s.phase) + 1) / 2) * 0.78;
+          const alpha = ((Math.sin(t * s.speed + s.phase) + 1) / 2) * 0.95;
           ctx.save();
           ctx.globalAlpha = alpha;
           ctx.shadowColor = '#ffe090'; ctx.shadowBlur = 6;

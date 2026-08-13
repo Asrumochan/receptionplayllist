@@ -239,11 +239,11 @@
       opacity: 1;
     }
 
-    /* Canvas sits behind everything */
+    /* Canvas floats above content so particles are visible */
     #particles {
       position: fixed;
       inset: 0;
-      z-index: -4;
+      z-index: 5;
       pointer-events: none;
     }
 
@@ -263,28 +263,28 @@
     .beam-1 {
       left: 14%;
       border-width: 0 70px 100vh 70px;
-      border-bottom-color: rgba(255,200,90,0.072);
+      border-bottom-color: rgba(255,200,90,0.22);
       filter: blur(18px);
       animation: beamSwing1 8s ease-in-out infinite;
     }
     .beam-2 {
       left: 36%;
       border-width: 0 90px 100vh 90px;
-      border-bottom-color: rgba(190,120,255,0.065);
+      border-bottom-color: rgba(190,120,255,0.20);
       filter: blur(22px);
       animation: beamSwing2 11s ease-in-out infinite;
     }
     .beam-3 {
       right: 30%;
       border-width: 0 80px 100vh 80px;
-      border-bottom-color: rgba(80,190,255,0.06);
+      border-bottom-color: rgba(80,190,255,0.18);
       filter: blur(20px);
       animation: beamSwing3 9.5s ease-in-out infinite;
     }
     .beam-4 {
       right: 8%;
       border-width: 0 60px 100vh 60px;
-      border-bottom-color: rgba(255,140,180,0.058);
+      border-bottom-color: rgba(255,140,180,0.18);
       filter: blur(16px);
       animation: beamSwing4 13s ease-in-out infinite;
     }
