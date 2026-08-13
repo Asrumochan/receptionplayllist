@@ -325,6 +325,7 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: rgba(255, 232, 190, 0.75);
+      align-self: flex-start;
     }
 
     .pulse-dot {
