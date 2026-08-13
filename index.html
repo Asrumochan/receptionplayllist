@@ -941,26 +941,34 @@
       'The champagne tower survived. The dance floor did not know what hit it.'
     ];
 
-    const youtubeSourceUrl = 'https://youtu.be/_i0oA5YYf1Y?si=ljuCO0_LQWfQOVk8';
-
-    function extractVideoId(url) {
-      try {
-        const parsed = new URL(url);
-        if (parsed.hostname.includes('youtu.be')) {
-          return parsed.pathname.replace('/', '');
-        }
-        return parsed.searchParams.get('v') || '';
-      } catch (err) {
-        return '';
-      }
-    }
+    const VIDEO_ID = 'XTdxvg5iBGw';
 
     const tracks = [
-      {
-        title: 'Reception Playlist Original',
-        videoId: extractVideoId(youtubeSourceUrl) || '_i0oA5YYf1Y',
-        start: 0
-      }
+      { title: '01 — Ajeeb Dastan Hai Yeh',               videoId: VIDEO_ID, start: 0    },
+      { title: '02 — Bheegi Bheegi Raaton Mein',           videoId: VIDEO_ID, start: 234  },
+      { title: '03 — Chalte Chalte Mere Yeh Geet',         videoId: VIDEO_ID, start: 459  },
+      { title: '04 — Chingari Koi Bhadke',                 videoId: VIDEO_ID, start: 768  },
+      { title: '05 — Dil Ke Jharoke Mein',                 videoId: VIDEO_ID, start: 1085 },
+      { title: '06 — Ek Pyar Ka Nagma Hai',                videoId: VIDEO_ID, start: 1327 },
+      { title: '07 — Gaata Rahe Mera Dil',                 videoId: VIDEO_ID, start: 1628 },
+      { title: '08 — Humein Aur Jeene Ki Chahat',          videoId: VIDEO_ID, start: 1860 },
+      { title: '09 — Jo Wada Kiya Woh Nibhana Padega',     videoId: VIDEO_ID, start: 2207 },
+      { title: '10 — Kabhi Kabhi Mere Dil Mein',           videoId: VIDEO_ID, start: 2441 },
+      { title: '11 — Keh Doon Tumhein',                    videoId: VIDEO_ID, start: 2706 },
+      { title: '12 — Koi Sehri Babu',                      videoId: VIDEO_ID, start: 2972 },
+      { title: '13 — Main Shayar To Nahin',                videoId: VIDEO_ID, start: 3247 },
+      { title: '14 — Maine Poocha Chand Se',               videoId: VIDEO_ID, start: 3567 },
+      { title: '15 — Neele Neele Ambar Par',               videoId: VIDEO_ID, start: 3864 },
+      { title: '16 — O Mere Dil Ke Chain',                 videoId: VIDEO_ID, start: 4196 },
+      { title: '17 — Pathar Ke Sanam',                     videoId: VIDEO_ID, start: 4459 },
+      { title: '18 — Pyar Deewana Hota Hai',               videoId: VIDEO_ID, start: 4678 },
+      { title: '19 — Rangeela Re',                         videoId: VIDEO_ID, start: 4899 },
+      { title: '20 — Sama Hai Suhana',                     videoId: VIDEO_ID, start: 5156 },
+      { title: '21 — Tere Bina Zindagi Se Koi',            videoId: VIDEO_ID, start: 5445 },
+      { title: '22 — Wada Karo Nahin Chhodoge Tum',        videoId: VIDEO_ID, start: 5779 },
+      { title: '23 — Yeh Reshmi Zulfein',                  videoId: VIDEO_ID, start: 6036 },
+      { title: '24 — Yeh Shaam Mastani',                   videoId: VIDEO_ID, start: 6299 },
+      { title: '25 — Zindagi Ka Safar Hai Ye Kaisa Safar', videoId: VIDEO_ID, start: 6523 }
     ];
 
     const quoteBox = document.getElementById('quoteBox');
@@ -1014,16 +1022,25 @@
 
     function playCurrentTrack(autoplay = true) {
       if (!player || !tracks[trackIndex]) return;
-      const current = tracks[trackIndex];
+      const track = tracks[trackIndex];
       updateTrackMeta();
-      player.loadVideoById({
-        videoId: current.videoId,
-        startSeconds: current.start,
-        suggestedQuality: 'small'
-      });
-      if (!autoplay) {
-        player.pauseVideo();
-        setPlayingUI(false);
+
+      // All tracks share the same video — seek within it instead of reloading.
+      const loaded = player.getVideoData ? player.getVideoData().video_id : null;
+      if (loaded === track.videoId) {
+        player.seekTo(track.start, true);
+        if (autoplay) {
+          player.playVideo();
+        } else {
+          player.pauseVideo();
+          setPlayingUI(false);
+        }
+      } else {
+        player.loadVideoById({ videoId: track.videoId, startSeconds: track.start });
+        if (!autoplay) {
+          player.pauseVideo();
+          setPlayingUI(false);
+        }
       }
     }
 
@@ -1086,14 +1103,28 @@
         const current = player.getCurrentTime();
         const total = player.getDuration();
 
-        if (!isSeeking && total > 0) {
-          const value = (current / total) * 100;
-          seekBar.value = value;
-          seekBar.style.setProperty('--played', `${value}%`);
+        // Auto-advance: move trackIndex when playhead crosses next track's start.
+        const next = tracks[trackIndex + 1];
+        if (next && current >= next.start - 0.5) {
+          trackIndex++;
+          updateTrackMeta();
         }
 
-        currentTimeEl.textContent = formatTime(current);
-        durationEl.textContent = formatTime(total);
+        if (!isSeeking && total > 0) {
+          // Show progress relative to current track segment, not full video.
+          const trackStart = tracks[trackIndex].start;
+          const trackEnd = tracks[trackIndex + 1] ? tracks[trackIndex + 1].start : total;
+          const segLen = trackEnd - trackStart;
+          const segPos = Math.max(0, current - trackStart);
+          const value = segLen > 0 ? (segPos / segLen) * 100 : 0;
+          seekBar.value = value;
+          seekBar.style.setProperty('--played', `${value}%`);
+          currentTimeEl.textContent = formatTime(segPos);
+          durationEl.textContent = formatTime(segLen);
+        } else {
+          currentTimeEl.textContent = formatTime(current);
+          durationEl.textContent = formatTime(total);
+        }
       }, 250);
     }
 
@@ -1123,8 +1154,8 @@
             updateTrackMeta();
             setPlayingUI(false);
             player.cueVideoById({
-              videoId: tracks[trackIndex].videoId,
-              startSeconds: tracks[trackIndex].start
+              videoId: VIDEO_ID,
+              startSeconds: 0
             });
             const iframe = player.getIframe();
             if (iframe) {
@@ -1145,7 +1176,8 @@
               setPlayingUI(false);
             }
             if (state === YT.PlayerState.ENDED) {
-              trackIndex = (trackIndex + 1) % tracks.length;
+              // Full video ended — loop back to first track.
+              trackIndex = 0;
               playCurrentTrack(true);
             }
           }
@@ -1197,8 +1229,11 @@
 
     seekBar.addEventListener('change', () => {
       if (!player || typeof player.getDuration !== 'function') return;
-      const duration = player.getDuration() || 0;
-      const target = (Number(seekBar.value) / 100) * duration;
+      // Seek within the current track's segment.
+      const trackStart = tracks[trackIndex].start;
+      const trackEnd = tracks[trackIndex + 1] ? tracks[trackIndex + 1].start : player.getDuration();
+      const segLen = trackEnd - trackStart;
+      const target = trackStart + (Number(seekBar.value) / 100) * segLen;
       player.seekTo(target, true);
       isSeeking = false;
     });
