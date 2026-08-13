@@ -247,30 +247,92 @@
       opacity: 1;
     }
 
+    /* Canvas sits behind everything */
+    #particles {
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      pointer-events: none;
+    }
+
+    /* Sweeping DJ beam divs */
+    .beam {
+      position: absolute;
+      top: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-top: none;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      transform-origin: 50% 0;
+      pointer-events: none;
+    }
+    .beam-1 {
+      left: 14%;
+      border-width: 0 70px 100vh 70px;
+      border-bottom-color: rgba(255,200,90,0.072);
+      filter: blur(18px);
+      animation: beamSwing1 8s ease-in-out infinite;
+    }
+    .beam-2 {
+      left: 36%;
+      border-width: 0 90px 100vh 90px;
+      border-bottom-color: rgba(190,120,255,0.065);
+      filter: blur(22px);
+      animation: beamSwing2 11s ease-in-out infinite;
+    }
+    .beam-3 {
+      right: 30%;
+      border-width: 0 80px 100vh 80px;
+      border-bottom-color: rgba(80,190,255,0.06);
+      filter: blur(20px);
+      animation: beamSwing3 9.5s ease-in-out infinite;
+    }
+    .beam-4 {
+      right: 8%;
+      border-width: 0 60px 100vh 60px;
+      border-bottom-color: rgba(255,140,180,0.058);
+      filter: blur(16px);
+      animation: beamSwing4 13s ease-in-out infinite;
+    }
+
+    /* Table silhouette strip */
+    .tables-layer {
+      position: fixed;
+      bottom: 88px;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
     main {
       min-height: 100vh;
-      padding: 8vh 6vw 190px;
-      display: grid;
-      place-items: center;
+      padding: 10vh 6vw 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .hero {
-      width: min(1080px, 100%);
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      width: min(520px, 94vw);
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 1.7rem;
+      gap: 1.6rem;
+      text-align: center;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.74rem;
-      letter-spacing: 0.18em;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(255, 242, 222, 0.83);
-      margin-bottom: 1rem;
+      color: rgba(255, 232, 190, 0.75);
     }
 
     .pulse-dot {
@@ -285,13 +347,13 @@
     h1 {
       font-family: "Abril Fatface", serif;
       font-weight: 400;
-      font-size: clamp(2.9rem, 7vw, 6.2rem);
-      line-height: 0.95;
-      color: #fff2dc;
+      font-size: clamp(3.2rem, 8vw, 7rem);
+      line-height: 0.93;
+      color: #fff4e0;
       text-shadow:
-        0 0 40px rgba(255, 210, 120, 0.45),
-        0 8px 28px rgba(20, 6, 14, 0.5);
-      margin-bottom: 1rem;
+        0 0 60px rgba(255, 210, 120, 0.55),
+        0 0 120px rgba(255, 180, 100, 0.2),
+        0 10px 32px rgba(14, 4, 10, 0.6);
       letter-spacing: 0.01em;
     }
 
@@ -352,7 +414,7 @@
       position: relative;
       display: grid;
       place-items: center;
-      padding: 1rem;
+      padding: 0.5rem;
     }
 
     .halo {
@@ -739,9 +801,21 @@
       100% { transform: translateY(0) translateX(0); opacity: 0.55; }
     }
 
-    @keyframes beamSwing {
-      0%, 100% { transform: rotate(-12deg); }
-      50% { transform: rotate(12deg); }
+    @keyframes beamSwing1 {
+      0%, 100% { transform: rotate(-20deg); opacity: 0.9; }
+      50%       { transform: rotate(20deg);  opacity: 0.5; }
+    }
+    @keyframes beamSwing2 {
+      0%, 100% { transform: rotate(14deg);  opacity: 0.7; }
+      50%       { transform: rotate(-18deg); opacity: 1;   }
+    }
+    @keyframes beamSwing3 {
+      0%, 100% { transform: rotate(-14deg); opacity: 0.8; }
+      50%       { transform: rotate(22deg);  opacity: 0.5; }
+    }
+    @keyframes beamSwing4 {
+      0%, 100% { transform: rotate(18deg);  opacity: 0.6; }
+      50%       { transform: rotate(-14deg); opacity: 1;   }
     }
 
     @keyframes stringFlicker {
@@ -760,18 +834,7 @@
     }
 
     @media (max-width: 930px) {
-      .hero {
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-      }
-
-      .object-wrap {
-        order: -1;
-      }
-
-      main {
-        padding-top: 4.8vh;
-      }
+      main { padding-top: 6vh; }
     }
 
     @media (max-width: 560px) {
@@ -808,10 +871,15 @@
   </style>
 </head>
 <body>
+  <canvas id="particles" aria-hidden="true"></canvas>
+
   <div class="bg" aria-hidden="true">
     <div class="grain"></div>
     <div class="dancefloor"></div>
-    <div class="spotlights"></div>
+    <div class="beam beam-1"></div>
+    <div class="beam beam-2"></div>
+    <div class="beam beam-3"></div>
+    <div class="beam beam-4"></div>
     <div class="stringlights"></div>
     <div class="glitter"></div>
     <div class="confetti"></div>
@@ -849,32 +917,59 @@
     <ellipse cx="160" cy="26" rx="2.5" ry="4" fill="rgba(255,245,195,0.65)"/>
   </svg>
 
+  <!-- Banquet table silhouettes at bottom of scene -->
+  <svg class="tables-layer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 110" preserveAspectRatio="xMidYMax meet">
+    <!-- Far-left table -->
+    <ellipse cx="100" cy="88" rx="72" ry="16" fill="rgba(80,28,48,0.55)"/>
+    <ellipse cx="100" cy="82" rx="72" ry="16" fill="rgba(100,36,58,0.5)"/>
+    <ellipse cx="100" cy="78" rx="36" ry="6" fill="rgba(240,200,140,0.12)"/>
+    <rect x="56" y="58" width="12" height="26" rx="5" fill="rgba(65,20,38,0.6)"/>
+    <rect x="130" y="55" width="12" height="26" rx="5" fill="rgba(65,20,38,0.6)"/>
+    <rect x="90" y="48" width="12" height="26" rx="5" fill="rgba(65,20,38,0.6)"/>
+    <!-- centre table -->
+    <ellipse cx="700" cy="96" rx="95" ry="20" fill="rgba(80,28,48,0.6)"/>
+    <ellipse cx="700" cy="88" rx="95" ry="20" fill="rgba(110,40,65,0.52)"/>
+    <ellipse cx="700" cy="82" rx="48" ry="8" fill="rgba(240,200,140,0.14)"/>
+    <rect x="638" y="60" width="14" height="32" rx="6" fill="rgba(60,18,35,0.65)"/>
+    <rect x="748" y="58" width="14" height="32" rx="6" fill="rgba(60,18,35,0.65)"/>
+    <rect x="693" y="48" width="14" height="32" rx="6" fill="rgba(60,18,35,0.65)"/>
+    <!-- candle glow centre table -->
+    <circle cx="700" cy="75" r="6" fill="rgba(255,230,140,0.55)" filter="blur(2px)"/>
+    <circle cx="700" cy="75" r="3" fill="rgba(255,245,200,0.9)"/>
+    <!-- far-right table -->
+    <ellipse cx="1300" cy="88" rx="72" ry="16" fill="rgba(80,28,48,0.55)"/>
+    <ellipse cx="1300" cy="82" rx="72" ry="16" fill="rgba(100,36,58,0.5)"/>
+    <ellipse cx="1300" cy="78" rx="36" ry="6" fill="rgba(240,200,140,0.12)"/>
+    <rect x="1256" y="58" width="12" height="26" rx="5" fill="rgba(65,20,38,0.6)"/>
+    <rect x="1330" y="55" width="12" height="26" rx="5" fill="rgba(65,20,38,0.6)"/>
+    <rect x="1290" y="48" width="12" height="26" rx="5" fill="rgba(65,20,38,0.6)"/>
+    <!-- mid-left table -->
+    <ellipse cx="380" cy="100" rx="80" ry="18" fill="rgba(75,25,44,0.48)"/>
+    <ellipse cx="380" cy="94" rx="80" ry="18" fill="rgba(95,33,54,0.44)"/>
+    <ellipse cx="380" cy="89" rx="40" ry="7" fill="rgba(240,200,140,0.10)"/>
+    <!-- mid-right table -->
+    <ellipse cx="1020" cy="100" rx="80" ry="18" fill="rgba(75,25,44,0.48)"/>
+    <ellipse cx="1020" cy="94" rx="80" ry="18" fill="rgba(95,33,54,0.44)"/>
+    <ellipse cx="1020" cy="89" rx="40" ry="7" fill="rgba(240,200,140,0.10)"/>
+    <!-- waiter silhouette left -->
+    <ellipse cx="250" cy="52" rx="8" ry="8" fill="rgba(40,14,26,0.55)"/>
+    <rect x="244" y="60" width="12" height="28" rx="4" fill="rgba(40,14,26,0.5)"/>
+    <rect x="238" y="64" width="6" height="16" rx="3" fill="rgba(40,14,26,0.45)"/>
+    <rect x="256" y="63" width="6" height="8" rx="2" fill="rgba(40,14,26,0.45)"/>
+    <!-- waiter silhouette right -->
+    <ellipse cx="1140" cy="52" rx="8" ry="8" fill="rgba(40,14,26,0.55)"/>
+    <rect x="1134" y="60" width="12" height="28" rx="4" fill="rgba(40,14,26,0.5)"/>
+    <rect x="1128" y="64" width="6" height="16" rx="3" fill="rgba(40,14,26,0.45)"/>
+    <rect x="1146" y="63" width="6" height="8" rx="2" fill="rgba(40,14,26,0.45)"/>
+  </svg>
+
   <main>
     <section class="hero">
-      <div>
-        <div class="eyebrow">
-          <span class="pulse-dot"></span>
-          grand ballroom &nbsp;·&nbsp; table 7 &nbsp;·&nbsp; live now
-        </div>
-        <h1>Reception<br />Playlist Nights</h1>
-        <p class="subtitle">
-          Chandeliers above, round tables draped in ivory, waiters gliding by with starters,
-          and the DJ turning requests into memories. Welcome to the night everyone remembers.
-        </p>
-
-        <div class="memory-tags" aria-label="Reception memories">
-          <span>🕯️ Table 7 — Bride's Side</span>
-          <span>🍽️ Starters Being Served</span>
-          <span>🎶 DJ Request Open</span>
-          <span>🥂 Champagne Tower Up</span>
-          <span>📸 Photographer on Floor</span>
-          <span>🌹 Floral Centrepiece Fresh</span>
-          <span>🎂 Cake Cut at 9:30</span>
-        </div>
-
-        <div class="quote-box" id="quoteBox" aria-live="polite"></div>
+      <div class="eyebrow">
+        <span class="pulse-dot"></span>
+        grand ballroom &nbsp;·&nbsp; live now
       </div>
-
+      <h1>Reception<br />Playlist Nights</h1>
       <div class="object-wrap">
         <div class="halo"></div>
         <article class="cassette" id="cassette" aria-label="Central memory cassette" tabindex="0">
@@ -885,20 +980,17 @@
             </div>
             <div class="label-mini">Live ●</div>
           </header>
-
           <section class="window" aria-hidden="true">
             <div class="reel"></div>
             <div class="tape"></div>
             <div class="reel right"></div>
           </section>
-
           <footer class="status-strip">
-            <span>Waiter: <b>Round 2 Serving</b></span>
+            <span>Waiter: <b>Round 2</b></span>
             <span>Floor: <b>🔥 Packed</b></span>
           </footer>
         </article>
         <div class="spark-layer" id="sparkLayer"></div>
-        <p class="hint">Tap the tape or press <kbd>D</kbd> for a dance-floor flash</p>
       </div>
     </section>
   </main>
@@ -928,6 +1020,115 @@
 
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
+    /* ── Canvas particle system ── */
+    (function () {
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const W = () => canvas.width;
+      const H = () => canvas.height;
+
+      // Bokeh orbs
+      const BOKEH_COLORS = [
+        'hsl(38,90%,65%)', 'hsl(320,60%,60%)', 'hsl(260,70%,70%)',
+        'hsl(200,80%,70%)', 'hsl(50,85%,62%)', 'hsl(0,70%,65%)'
+      ];
+      const bokeh = Array.from({ length: 28 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        r: 28 + Math.random() * 90,
+        a: 0.025 + Math.random() * 0.065,
+        dx: (Math.random() - 0.5) * 0.00015,
+        dy: -0.00008 - Math.random() * 0.00012,
+        color: BOKEH_COLORS[Math.floor(Math.random() * BOKEH_COLORS.length)]
+      }));
+
+      // Sparkle dots
+      const sparkles = Array.from({ length: 70 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        r: 0.6 + Math.random() * 1.8,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.6 + Math.random() * 2.2
+      }));
+
+      // Petal / confetti
+      const PETAL_COLORS = ['#f7d48f', '#f5b8c8', '#e8c0e0', '#fde8b0', '#c8c0f5', '#f0e0a0'];
+      const petals = Array.from({ length: 38 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        w: 5 + Math.random() * 9,
+        h: 3 + Math.random() * 4,
+        a: 0.35 + Math.random() * 0.5,
+        dy: 0.00025 + Math.random() * 0.0006,
+        dx: (Math.random() - 0.5) * 0.0003,
+        rot: Math.random() * Math.PI * 2,
+        drot: (Math.random() - 0.5) * 0.035,
+        color: PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)]
+      }));
+
+      function tick() {
+        const w = W(), h = H();
+        ctx.clearRect(0, 0, w, h);
+
+        // Bokeh
+        bokeh.forEach(b => {
+          const bx = b.x * w, by = b.y * h;
+          const g = ctx.createRadialGradient(bx, by, 0, bx, by, b.r);
+          g.addColorStop(0, b.color.replace('hsl', 'hsla').replace(')', `,${b.a})`));
+          g.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.beginPath();
+          ctx.fillStyle = g;
+          ctx.arc(bx, by, b.r, 0, Math.PI * 2);
+          ctx.fill();
+          b.x += b.dx; b.y += b.dy;
+          if (b.y < -b.r / h) { b.y = 1 + b.r / h; b.x = Math.random(); }
+          if (b.x < -b.r / w) b.x = 1 + b.r / w;
+          if (b.x > 1 + b.r / w) b.x = -b.r / w;
+        });
+
+        // Sparkles
+        const t = performance.now() / 1000;
+        sparkles.forEach(s => {
+          const alpha = ((Math.sin(t * s.speed + s.phase) + 1) / 2) * 0.75;
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.shadowColor = '#ffe090';
+          ctx.shadowBlur = 5;
+          ctx.fillStyle = '#fff8e0';
+          ctx.beginPath();
+          ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        // Petals
+        petals.forEach(p => {
+          ctx.save();
+          ctx.globalAlpha = p.a;
+          ctx.translate(p.x * w, p.y * h);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.w, p.h, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+          p.y += p.dy; p.x += p.dx; p.rot += p.drot;
+          if (p.y > 1.02) { p.y = -0.02; p.x = Math.random(); }
+        });
+
+        requestAnimationFrame(tick);
+      }
+      tick();
+    }());
+
     const nostalgicLines = [
       '"Can I get another plate of that paneer?" — every uncle at every reception.',
       'The DJ said last song. Nobody believed him. He played four more.',
@@ -971,7 +1172,6 @@
       { title: '25 — Zindagi Ka Safar Hai Ye Kaisa Safar', videoId: VIDEO_ID, start: 6523 }
     ];
 
-    const quoteBox = document.getElementById('quoteBox');
     const trackTitle = document.getElementById('trackTitle');
     const playBtn = document.getElementById('playBtn');
     const prevBtn = document.getElementById('prevBtn');
@@ -982,26 +1182,12 @@
     const cassette = document.getElementById('cassette');
     const sparkLayer = document.getElementById('sparkLayer');
 
-    let quoteIndex = 0;
     let trackIndex = 0;
     let player;
     let ticking;
     let isSeeking = false;
     let isPlayerReady = false;
     let pendingPlayRequest = false;
-
-    function setQuote(index) {
-      quoteBox.classList.add('fade');
-      setTimeout(() => {
-        quoteBox.textContent = nostalgicLines[index % nostalgicLines.length];
-        quoteBox.classList.remove('fade');
-      }, 210);
-    }
-
-    function nextQuote() {
-      quoteIndex = (quoteIndex + 1) % nostalgicLines.length;
-      setQuote(quoteIndex);
-    }
 
     function formatTime(totalSeconds) {
       const sec = Math.max(0, Math.floor(totalSeconds || 0));
@@ -1255,8 +1441,6 @@
       }
     });
 
-    quoteBox.textContent = nostalgicLines[0];
-    setInterval(nextQuote, 4200);
   </script>
 </body>
 </html>
