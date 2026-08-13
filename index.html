@@ -45,10 +45,38 @@
       z-index: -5;
       overflow: hidden;
       background:
-        radial-gradient(1200px 700px at 15% -15%, rgba(255, 210, 153, 0.28), transparent 60%),
-        radial-gradient(900px 600px at 90% 5%, rgba(183, 83, 122, 0.32), transparent 58%),
-        radial-gradient(900px 550px at 40% 90%, rgba(255, 154, 115, 0.2), transparent 64%),
-        linear-gradient(140deg, #130c12 0%, #2a1421 45%, #3b1c2f 100%);
+        radial-gradient(1300px 760px at 50% -18%, rgba(255, 225, 170, 0.28), transparent 58%),
+        radial-gradient(920px 620px at 8% 2%, rgba(225, 96, 120, 0.28), transparent 60%),
+        radial-gradient(920px 620px at 95% 5%, rgba(255, 172, 98, 0.22), transparent 62%),
+        radial-gradient(1000px 500px at 50% 90%, rgba(252, 212, 123, 0.2), transparent 66%),
+        linear-gradient(160deg, #1b0f15 0%, #4d1f37 42%, #7c2b45 100%);
+    }
+
+    .bg::before,
+    .bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .bg::before {
+      background:
+        linear-gradient(100deg, transparent 0 15%, rgba(255, 228, 176, 0.22) 17%, transparent 19% 27%, rgba(255, 198, 145, 0.18) 29%, transparent 31% 100%),
+        linear-gradient(260deg, transparent 0 65%, rgba(248, 214, 156, 0.16) 67%, transparent 69% 100%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+    }
+
+    .bg::after {
+      background-image:
+        radial-gradient(circle, rgba(255, 243, 206, 0.82) 0 1.6px, transparent 2.2px),
+        radial-gradient(circle, rgba(255, 205, 143, 0.78) 0 1.4px, transparent 2px),
+        radial-gradient(circle, rgba(255, 176, 142, 0.72) 0 1.2px, transparent 1.8px);
+      background-size: 180px 180px, 220px 220px, 260px 260px;
+      background-position: 0 0, 40px 40px, 80px 20px;
+      opacity: 0.24;
+      animation: confettiDrift 24s linear infinite;
     }
 
     .grain,
@@ -540,6 +568,11 @@
     @keyframes festoonRev {
       0% { transform: translateX(0); }
       100% { transform: translateX(160px); }
+    }
+
+    @keyframes confettiDrift {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(28px); }
     }
 
     @keyframes dotPulse {
