@@ -88,39 +88,6 @@
       animation: floorPulse 4.8s ease-in-out infinite, danceColors 3.2s linear infinite;
     }
 
-    /* Dancing couples */
-    .dancers-layer {
-      position: fixed;
-      bottom: 100px;
-      left: 35%;
-      width: 65%;
-      z-index: 3;
-      pointer-events: none;
-      filter: drop-shadow(0 0 12px rgba(255,160,100,0.25));
-    }
-
-    .dance-pair {
-      transform-box: fill-box;
-      transform-origin: center bottom;
-    }
-
-    .dance-pair-1 { animation: danceWave1 3.4s ease-in-out infinite; }
-    .dance-pair-2 { animation: danceWave2 2.9s ease-in-out infinite; }
-    .dance-pair-3 { animation: danceWave3 3.7s ease-in-out infinite; animation-delay: -1.4s; }
-
-    @keyframes danceWave1 {
-      0%, 100% { transform: rotate(-3deg) translateY(0); }
-      50% { transform: rotate(3deg) translateY(-5px); }
-    }
-    @keyframes danceWave2 {
-      0%, 100% { transform: rotate(2deg) translateY(-2px); }
-      50% { transform: rotate(-3.5deg) translateY(0); }
-    }
-    @keyframes danceWave3 {
-      0%, 100% { transform: rotate(-2.5deg) translateY(-1px); }
-      50% { transform: rotate(3.5deg) translateY(-6px); }
-    }
-
     /* DJ spotlight beams from ceiling */
     .spotlights {
       top: 0;
