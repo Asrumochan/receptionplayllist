@@ -448,6 +448,12 @@
       { title: '50 - Yaad Na Jaye Beete Dinon Ki',            videoId: VIDEO_ID, start: 10483 }
     ];
 
+    /* Shuffle tracks on every page load (Fisher-Yates) */
+    for (let i = tracks.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [tracks[i], tracks[j]] = [tracks[j], tracks[i]];
+    }
+
     const trackTitle = document.getElementById('trackTitle');
     const playBtn = document.getElementById('playBtn');
     const prevBtn = document.getElementById('prevBtn');
