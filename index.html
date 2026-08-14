@@ -617,24 +617,18 @@
       player = new YT.Player('yt-frame', {
         height: '1',
         width: '1',
-        videoId: tracks[0].videoId,
         playerVars,
         events: {
           onReady: () => {
             isPlayerReady = true;
             updateTrackMeta();
-            setPlayingUI(false);
-            player.cueVideoById({
-              videoId: VIDEO_ID,
-              startSeconds: 0
-            });
             const iframe = player.getIframe();
             if (iframe) {
               iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
             }
             startTicker();
-            pendingPlayRequest = false;
-            requestPlayback(true);
+            player.loadVideoById({ videoId: tracks[0].videoId, startSeconds: tracks[0].start });
+            setPlayingUI(true);
           },
           onStateChange: (event) => {
             const state = event.data;
