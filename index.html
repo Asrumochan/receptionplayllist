@@ -448,6 +448,10 @@
       { title: 'Yaad Na Jaye Beete Dinon Ki',            videoId: VIDEO_ID, start: 10483 }
     ];
 
+    /* Pre-compute each track's end time from chronological order */
+    const chrono = [...tracks].sort((a, b) => a.start - b.start);
+    chrono.forEach((t, i) => { t.end = chrono[i + 1] ? chrono[i + 1].start : null; });
+
     /* Shuffle tracks on every page load (Fisher-Yates) */
     for (let i = tracks.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -571,27 +575,26 @@
         const current = player.getCurrentTime();
         const total = player.getDuration();
 
-        // Auto-advance: move trackIndex when playhead crosses next track's start.
-        const next = tracks[trackIndex + 1];
-        if (next && current >= next.start - 0.5) {
+        // Auto-advance using the track's own end time (independent of shuffle order).
+        const trackStart = tracks[trackIndex].start;
+        const trackEnd = tracks[trackIndex].end || total;
+
+        if (current >= trackEnd - 0.5 && trackIndex < tracks.length - 1) {
           trackIndex++;
           updateTrackMeta();
+          playCurrentTrack();
         }
 
-        if (!isSeeking && total > 0) {
-          // Show progress relative to current track segment, not full video.
-          const trackStart = tracks[trackIndex].start;
-          const trackEnd = tracks[trackIndex + 1] ? tracks[trackIndex + 1].start : total;
+        if (total > 0) {
           const segLen = trackEnd - trackStart;
           const segPos = Math.max(0, current - trackStart);
           const value = segLen > 0 ? (segPos / segLen) * 100 : 0;
-          seekBar.value = value;
-          seekBar.style.setProperty('--played', `${value}%`);
+          if (!isSeeking) {
+            seekBar.value = value;
+            seekBar.style.setProperty('--played', `${value}%`);
+          }
           currentTimeEl.textContent = formatTime(segPos);
           durationEl.textContent = formatTime(segLen);
-        } else {
-          currentTimeEl.textContent = formatTime(current);
-          durationEl.textContent = formatTime(total);
         }
       }, 250);
     }
@@ -699,7 +702,7 @@
       if (!player || typeof player.getDuration !== 'function') return;
       // Seek within the current track's segment.
       const trackStart = tracks[trackIndex].start;
-      const trackEnd = tracks[trackIndex + 1] ? tracks[trackIndex + 1].start : player.getDuration();
+      const trackEnd = tracks[trackIndex].end || player.getDuration();
       const segLen = trackEnd - trackStart;
       const target = trackStart + (Number(seekBar.value) / 100) * segLen;
       player.seekTo(target, true);
