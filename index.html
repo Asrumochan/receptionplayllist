@@ -603,7 +603,7 @@
       const isHttpOrigin = window.location.protocol === 'http:' || window.location.protocol === 'https:';
       const playerVars = {
         playsinline: 1,
-        autoplay: 0,
+        autoplay: 1,
         rel: 0,
         controls: 1,
         modestbranding: 1,
@@ -633,10 +633,8 @@
               iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
             }
             startTicker();
-            if (pendingPlayRequest) {
-              pendingPlayRequest = false;
-              requestPlayback(true);
-            }
+            pendingPlayRequest = false;
+            requestPlayback(true);
           },
           onStateChange: (event) => {
             const state = event.data;
